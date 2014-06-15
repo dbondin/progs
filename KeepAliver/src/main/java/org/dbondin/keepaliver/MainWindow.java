@@ -1,9 +1,3 @@
-/*********************************
- * PROPRIETARY/CONFIDENTIAL.  Use of this product is subject to license terms.
- * Copyright (c) 2014 NVision Group, Inc. All rights reserved.
- *
- * MainWindow.java Jun 6, 2014 10:56:25 AM
- *********************************/
 package org.dbondin.keepaliver;
 
 import java.awt.AWTException;
@@ -46,7 +40,6 @@ public class MainWindow extends JDialog {
 
 	public void setMessage(final String message) {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 				messageLabel.setText(message);
 			}
@@ -70,7 +63,6 @@ public class MainWindow extends JDialog {
 
 		MenuItem miExit = new MenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				SystemTray.getSystemTray().remove(trayIcon);
 				System.exit(0);
@@ -90,7 +82,6 @@ public class MainWindow extends JDialog {
 		}
 
 		trayIcon.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(!isVisible());
 			}
@@ -102,6 +93,9 @@ public class MainWindow extends JDialog {
 			thr = new Thread("KeepAliver-Pings-Thread") {
 				@Override
 				public void run() {
+					
+					DatagramSocket ds = null;
+					
 					try {
 
 						List<String> addresses = new ArrayList<String>();
@@ -128,7 +122,7 @@ public class MainWindow extends JDialog {
 
 						String message = sb.toString();
 
-						DatagramSocket ds = new DatagramSocket();
+						ds = new DatagramSocket();
 
 						DatagramPacket dp = new DatagramPacket(
 								message.getBytes(), message.getBytes().length,
@@ -141,6 +135,14 @@ public class MainWindow extends JDialog {
 						}
 					} catch (Throwable t) {
 						setMessage("ERROR: " + t.getMessage());
+					}
+					finally {
+						try {
+							ds.close();
+						}
+						catch(Throwable t) {
+							/* Ignore */
+						}
 					}
 				};
 			};

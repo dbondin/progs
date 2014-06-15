@@ -1,9 +1,3 @@
-/*********************************
- * PROPRIETARY/CONFIDENTIAL.  Use of this product is subject to license terms.
- * Copyright (c) 2014 NVision Group, Inc. All rights reserved.
- *
- * KeepAliver.java Jun 6, 2014 10:56:02 AM
- *********************************/
 package org.dbondin.keepaliver;
 
 import javax.swing.JOptionPane;
@@ -26,7 +20,6 @@ public class KeepAliver {
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 				MainWindow mw = new MainWindow();
 
