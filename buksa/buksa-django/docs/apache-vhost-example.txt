@@ -1,0 +1,29 @@
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+    ServerAdmin dbondin@ya.ru
+    DocumentRoot "/home/sites/dbondin.homelinux.org/"
+    ServerName dbondin.homelinux.org
+    ErrorLog "/var/log/httpd/dbondin.homelinux.org-error_log"
+    CustomLog "/var/log/httpd/dbondin.homelinux.org-access_log" common
+    <Location "/">
+        Order allow,deny
+        Allow from all
+        SetHandler python-program
+        PythonHandler django.core.handlers.modpython
+        PythonPath "['/home/sites/dbondin.homelinux.org/'] + sys.path"
+        SetEnv DJANGO_SETTINGS_MODULE buksa.settings
+        PythonDebug On
+    </Location>
+
+    Alias /css /home/sites/dbondin.homelinux.org/buksa-css
+    <Location "/css">
+        SetHandler None
+    </Location>
+
+    Alias /images /home/sites/dbondin.homelinux.org/buksa-images
+    <Location "/images">
+        SetHandler None
+    </Location>
+
+</VirtualHost>

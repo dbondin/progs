@@ -1,0 +1,65 @@
+div#main {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+div#head {
+  margin: 0px;
+  padding: 0px;
+  border-style: none;
+  border-width: 0px;
+  border-color: #000000;
+  background-color: #c0c0c0;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+}
+
+div#page {
+  background-color: #c0c0c0;
+  width: 100%;
+  height: 640px;
+  text-align: center;
+  overflow: scroll;
+  padding: 0px;
+  margin: 0px;
+}
+
+div#title {
+  font-weight: bold;
+  padding: 4px;
+  margin: 0px;
+  background-color: #c0c0ff;
+  color: #000080;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+div#buttons {
+  padding: 4px;
+  margin: 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-width: 0px;
+  border-style: solid;
+  border-color: black;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+img.pageimg {
+  margin: 16px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+}
+
+button.navbutton {
+  width: 28px;
+  height: 28px;
+}
+
+select#pages {
+}

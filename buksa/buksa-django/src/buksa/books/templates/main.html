@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <link rel="stylesheet" href="/css/main.css" />
+  <title>{% block title %}BUKSA{% endblock %}</title>
+ </head>
+ <body>
+  <div id="header" class="header">
+   {% block header %}
+    <h1>BUKSA</h1>
+   {% endblock %}
+  </div>
+  <div id="search">
+   {% block search %}
+    <form method="GET" url="">
+     {% if query_search %}
+     <input type="text" name="query_search" value="{{ query_search }}"/>
+     {% else %}
+     <input type="text" name="query_search"/>
+     {% endif %}
+     <input type="submit" value="Search"/>
+    </form>
+   {% endblock %}
+  </div>
+  <hr/>
+  <div id="taglist" class="taglist">
+   {% block taglist %}
+    <span class="tag"><a href="/books/?query_all">all</a></span><br/>
+    {% if tags_list %}
+     {% for tag in tags_list %}
+      <span class="tag"><a href="/books/?query_bytag={{ tag.id }}">{{ tag.title }}</a></span>
+     {% endfor %}
+    {% endif %}
+   {% endblock %}
+  </div>
+  <hr/>
+  <div id="booklist">
+   {% block booklist %}
+    {% if books_list %}
+     Total books found: {{ books_count }}
+     <table class="books_list">
+      {% for book in books_list %}
+       <tr>
+        <td rowspan="5">
+         <div class="cover">
+          <a class="cover" href="/books/bindata/{{ book.id }}">
+           <img class="cover" src="cover/{{ book.id }}"/>
+          </a>
+         </div>
+        </td>
+        <td>title</td>
+        <td style="width:100%;font-weight:bold;">{{ book.title }}</td>
+        <td><span class="tag"><a href="/books/bindata/{{ book.id }}">load</a></span></td>
+       </tr>
+       <tr>
+        <td>authors</td>
+        <td>{{ book.authors }}</td>
+        <td>
+         {% if book.has_preview %}
+          <span class="tag"><a href="/preview/{{ book.id }}" target="_blank">view</a></span>
+         {% else %}
+          -
+         {% endif %}
+        </td>
+       </tr>
+       <tr>
+        <td>date</td>
+        <td>{{ book.ctime|date:"d M Y"|lower }}</td>
+        <td>&nbsp;</td>
+       </tr>
+       <tr>
+        <td>size</td>
+        <td>{{ book.bindata_size_hr }}</td>
+        <td>&nbsp;</td>
+       </tr>
+       <tr>
+        <td>tags</td>
+        <td>
+         {% if book.tags %}
+          {% for tag in book.tags.all %}
+           <span class="tag"><a href="/books/?query_bytag={{ tag.id }}">{{ tag.title }}</a></span>
+          {% endfor %}
+         {% else %}
+          &nbsp;
+         {% endif %}
+        </td>
+        <td>&nbsp;</td>
+       </tr>
+      {% endfor %}
+     </table>
+     {% if prev_url %}
+      <span class="tag"><a href="/books/?{{ prev_url }}">prev</a></span>
+     {% endif %}
+     {% if prev_url or next_url %}
+      [{{ current_page }} of {{ total_pages }}]
+     {% endif %}
+     {% if next_url %}
+      <span class="tag"><a href="/books/?{{ next_url }}">next</a></span>
+     {% endif %}
+    {% endif %}
+   {% endblock %}
+  </div>
+  <hr/>
+  <div id="footer">
+   {% block footer %}ApplMath, 2011{% endblock %}
+  </div>
+ </body>
+</html>

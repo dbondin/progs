@@ -1,0 +1,53 @@
+<html>
+ <head>
+  <title>BUKSA :: PREVIEW</title>
+  <link rel="stylesheet" type="text/css" href="/css/preview.css" />
+  <script language="javascript">
+   var book = {
+
+    {% if vbp.id %}
+     'id': {{ vbp.id }},
+    {% else %}
+     'id': null,
+    {% endif %}
+
+    {% if vbp.title %}
+     'title': '{{ vbp.title }}',
+    {% else %}
+     'title': null,
+    {% endif %}
+
+    {% if vbp.author %}
+     'author': '{{ vbp.author }}',
+    {% else %}
+     'author': null,
+    {% endif %}
+
+    {% if vbp.pages_num %}
+     'pages': '{{ vbp.pages_num }}'
+    {% else %}
+     'pages': null
+    {% endif %}
+
+   };
+  </script>
+  <script language="javascript" src="/js/preview.js"></script>
+ </head>
+ <body onload="init();" onresize="fixSize();">
+  <div id="main">
+   <div id="head">
+    <div id="title">???</div>
+    <div id="buttons">
+     <button id="first" class="navbutton" title="First Page" onclick="first();"><img src="/images/page-first.gif"/></button>
+     <button id="prev" class="navbutton" title="Previous Page" onclick="prev();"><img src="/images/page-prev.gif"/></button>
+     <button id="next" class="navbutton" title="Next Page" onclick="next();"><img src="/images/page-next.gif"/></button>
+     <button id="last" class="navbutton" title="Last Page" onclick="last();"><img src="/images/page-last.gif"/></button>
+     <span>&nbsp;&nbsp;&nbsp;</span>
+     <select id="pages" onchange="select();"></select>
+     <span id="count">of ???</span>
+    </div>
+   </div>
+   <div id="page"></div>
+  </div>
+ </body>
+</html>

@@ -1,0 +1,97 @@
+body {
+ font-family: sans-serif;
+ font-style: normal;
+ font-variant: normal;
+ font-weight: normal;
+ font-size: 12pt;
+ color: #808080;
+ background-color: #ffffc0;
+ text-decoration: none;
+}
+
+div.header {
+ color: #808080;
+ background-color: #ffffc0;
+}
+
+div.taglist {
+ text-align: center;
+}
+
+.tag a:link {
+ white-space: nowrap;
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.tag a:visited {
+ white-space: nowrap;
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.tag a:active {
+ white-space: nowrap;
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.tag a:hover {
+ white-space: nowrap;
+ color: #4040ff;
+ text-decoration: none;
+}
+
+.book a:link {
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.book a:visited {
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.book a:active {
+ color: #8080c0;
+ text-decoration: none;
+}
+
+.book a:hover {
+ color: #8080c0;
+ text-decoration: none;
+}
+
+div.cover {
+ width: 132px;
+ height: 132px;
+ border-width: 1px;
+ border-style: solid;
+ border-color: #808080;
+ text-align: center;
+ padding: 2px;
+ background-color: #c0c080;
+ vertical-align: middle;
+ line-height: 132px;
+}
+
+img.cover {
+ vertical-align: middle;
+ border-style: none;
+}
+
+table.books_list {
+ width: 100%;
+ border-width: 0px;
+ border-color: black;
+ border-style: solid;
+}
+
+a.cover {
+ margin: 0px;
+ padding: 0px;
+ border-width: 0px;
+ border-style: none;
+ border-spacing: 0px;
+ stroke-width: 0px;
+}

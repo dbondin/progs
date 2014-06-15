@@ -1,0 +1,33 @@
+int main(int argc, char ** argv) {
+
+    EXEC SQL BEGIN DECLARE SECTION;
+
+    char * stmt = "SELECT * FROM TEST";
+
+    EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL WHENEVER SQLERROR SQLPRINT;
+
+    EXEC SQL CONNECT TO dbondin USER dbondin;
+
+    /* N1 */
+    EXEC SQL DECLARE cursor_1 CURSOR FOR SELECT * FROM TEST;
+    EXEC SQL OPEN cursor_1;
+    EXEC SQL CLOSE cursor_1;
+
+
+    /* N2 */
+    EXEC SQL DECLARE cursor_2 CURSOR FOR :stmt;
+    EXEC SQL OPEN cursor_2;
+    EXEC SQL CLOSE cursor_2;
+
+    /* N3 */
+    EXEC SQL PREPARE stmt FROM :stmt;
+    EXEC SQL DECLARE cursor_3 CURSOR FOR stmt;
+    EXEC SQL OPEN cursor_3;
+    EXEC SQL CLOSE cursor_3;
+
+    EXEC SQL DISCONNECT;
+
+    return 0;
+}

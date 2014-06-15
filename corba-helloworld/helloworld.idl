@@ -1,0 +1,5 @@
+module HelloWorld {
+  interface Hello {
+    string world(in string name);
+  };
+};
