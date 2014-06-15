@@ -1,6 +1,7 @@
 package org.dbondin.keepaliver;
 
 import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -40,20 +41,38 @@ public class MainWindow extends JDialog {
 
 	public void setMessage(final String message) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				messageLabel.setText(message);
 			}
 		});
 	}
+	
+	private static final String DEFAULT_TRAY_ICON_FILE_NAME = "KeepAliver-16x16.png";
 
 	private void initializeComponents() {
 
-		Image icon = new ImageIcon(getClass().getResource("KeepAliver.png"))
+		String trayIconFileName = DEFAULT_TRAY_ICON_FILE_NAME;
+		Image trayIconImage = null;
+		
+		/* Determine the tray icon prefered size */
+		Dimension trayIconSize = SystemTray.getSystemTray().getTrayIconSize();
+		if(trayIconSize != null) {
+			trayIconFileName = "KeepAliver-" + trayIconSize.width + "x" + trayIconSize.height + ".png";
+		}
+		
+		try {
+			trayIconImage = new ImageIcon(getClass().getResource(trayIconFileName))
 				.getImage();
+		}
+		catch(Throwable t) {
+			trayIconImage = new ImageIcon(getClass().getResource(DEFAULT_TRAY_ICON_FILE_NAME))
+				.getImage();
+		}
 
 		setSize(320, 200);
 		setTitle("KeepAliver");
-		setIconImage(icon);
+		setIconImage(trayIconImage);
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 
 		messageLabel = new JLabel();
@@ -63,6 +82,7 @@ public class MainWindow extends JDialog {
 
 		MenuItem miExit = new MenuItem("Exit");
 		miExit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				SystemTray.getSystemTray().remove(trayIcon);
 				System.exit(0);
@@ -70,8 +90,10 @@ public class MainWindow extends JDialog {
 		});
 		menu.add(miExit);
 
-		trayIcon = new TrayIcon(icon, "KeepAliver", menu);
+		trayIcon = new TrayIcon(trayIconImage, "KeepAliver", menu);
 
+		
+		
 		try {
 			SystemTray.getSystemTray().add(trayIcon);
 		} catch (AWTException ex) {
@@ -82,6 +104,7 @@ public class MainWindow extends JDialog {
 		}
 
 		trayIcon.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(!isVisible());
 			}

@@ -20,6 +20,7 @@ public class KeepAliver {
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				MainWindow mw = new MainWindow();
 
