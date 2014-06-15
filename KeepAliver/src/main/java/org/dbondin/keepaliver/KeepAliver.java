@@ -23,7 +23,7 @@ public class KeepAliver {
 			@Override
 			public void run() {
 				MainWindow mw = new MainWindow();
-
+				mw.setLocationRelativeTo(null);
 				mw.startPings();
 			}
 		});
