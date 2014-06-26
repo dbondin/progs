@@ -12,6 +12,19 @@ public class KeepAliver {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		final Settings settings = new Settings();
+		
+		if(args.length > 0) {
+			settings.setHost(args[0]);
+			if(args.length > 1) {
+				settings.setPort(Integer.parseInt(args[1]));
+				if(args.length > 2) {
+					settings.setDelay(Integer.parseInt(args[2]));
+				}
+			}
+		}
+		
 		if (!java.awt.SystemTray.isSupported()) {
 			JOptionPane.showMessageDialog(null,
 					"SystemTray is not supported. Exiting", "Error",
@@ -22,7 +35,7 @@ public class KeepAliver {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				MainWindow mw = new MainWindow();
+				MainWindow mw = new MainWindow(settings);
 				mw.setLocationRelativeTo(null);
 				mw.startPings();
 			}

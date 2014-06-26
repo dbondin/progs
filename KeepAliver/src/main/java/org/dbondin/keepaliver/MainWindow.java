@@ -1,11 +1,16 @@
 package org.dbondin.keepaliver;
 
 import java.awt.AWTException;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
+import java.awt.TextArea;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +22,15 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 /**
@@ -33,17 +41,36 @@ public class MainWindow extends JDialog {
 
 	private static final long serialVersionUID = 5579395730063073798L;
 
-	public MainWindow() {
+	private Settings settings;
+	
+	public MainWindow(Settings settings) {
 		super();
 
+		this.settings = settings;
+		
 		initializeComponents();
 	}
 
+	public static final int MAX_LOG_LINES = 10;
+	
 	public void setMessage(final String message) {
+		
+		if(logList.size() >= MAX_LOG_LINES) {
+			logList.pop();
+		}
+		logList.add(message);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				messageLabel.setText(message);
+				//messageLabel.setText(message);
+				StringBuilder sb = new StringBuilder();
+				for(String s : logList) {
+					sb.append(s).append('\n');
+				}
+				String text = sb.toString();
+				logTextArea.setText(text);
+				logTextArea.setCaretPosition(text.length());
 			}
 		});
 	}
@@ -75,8 +102,32 @@ public class MainWindow extends JDialog {
 		setIconImage(trayIconImage);
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 
-		messageLabel = new JLabel();
-		getContentPane().add(messageLabel);
+		//messageLabel = new JLabel();
+		//getContentPane().add(messageLabel);
+		
+		Container cp = getContentPane();
+		cp.setLayout(new GridBagLayout());
+
+		JLabel hostPortLabel = new JLabel("Target: " + settings.getHost() + ":" + settings.getPort());
+		cp.add(hostPortLabel, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
+				GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL,
+				new Insets(2,  2,  2,  2), 0, 0));
+		
+		
+		JLabel delayLabel = new JLabel("Delay: " + settings.getDelay() + " sec");
+		cp.add(delayLabel, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
+				GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL,
+				new Insets(2,  2,  2,  2), 0, 0));
+		
+		logTextArea = new JTextArea();
+		logTextArea.setEditable(false);
+		JScrollPane scr = new JScrollPane(logTextArea);
+		cp.add(scr, new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0,
+				GridBagConstraints.WEST,
+				GridBagConstraints.BOTH,
+				new Insets(2,  2,  2,  2), 0, 0));
 
 		PopupMenu menu = new PopupMenu("KeepAliver");
 
@@ -154,7 +205,7 @@ public class MainWindow extends JDialog {
 						while (true) {
 							ds.send(dp);
 							setMessage("LAST PING: " + new Date());
-							Thread.sleep(60000);
+							Thread.sleep(settings.getDelay() * 1000);
 						}
 					} catch (Throwable t) {
 						setMessage("ERROR: " + t.getMessage());
@@ -176,5 +227,7 @@ public class MainWindow extends JDialog {
 
 	private TrayIcon trayIcon;
 	private JLabel messageLabel;
+	private JTextArea logTextArea;
+	private LinkedList<String> logList = new LinkedList<String>();
 	private Thread thr = null;
 }
