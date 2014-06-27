@@ -1,5 +1,5 @@
 MAJOR_VERSION=0
-MINOR_VERSION=1
+MINOR_VERSION=2
 VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
 CXX=g++
@@ -25,6 +25,7 @@ all: libbitio.so libbitio.a
 
 libbitio.so: libbitio.so.$(VERSION)
 	@$(ECHO) Creating shared library symlink && \
+	if [ -h $(@) ]; then $(RM) $(@); fi && \
 	$(LN) $(<) $(@)
 
 libbitio.so.$(VERSION): $(sources:.cpp=.o)

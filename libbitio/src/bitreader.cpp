@@ -13,6 +13,9 @@ bitreader::bitreader(unsigned int bufsize /* = DEF_BUF_SIZE */)
 {
   m_in = NULL;
   m_buf = NULL;
+  m_count = 0;
+  m_pos = 0;
+  m_bufsize = 0;
 
   this->set_bufsize(bufsize);
 
@@ -25,6 +28,8 @@ bitreader::bitreader(std::istream & in,
   m_in = &in;
   m_buf = NULL;
   m_count = 0;
+  m_pos = 0;
+  m_bufsize = 0;
 
   this->set_bufsize(bufsize);
 
@@ -67,7 +72,7 @@ int bitreader::read(unsigned int count)
     return -1;
   }
 
-  int z = this->read(&chr, count);
+  unsigned int z = this->read(&chr, count);
 
   if(z != count)
   {
