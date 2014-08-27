@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$2" == "" ]
+then
+  echo "Usage: avi2ipad file out.mp4" >&2
+  exit 1
+fi
+
+/opt/ffmpeg-2.2.1/bin/ffmpeg -i "$1" -r 30 -vcodec libx264 -acodec libfaac -threads 0 -ar 48000 -ab 128k -ac 2 -y -crf 21 -vpre default "$2"

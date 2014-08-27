@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# Configuration ################################################################
+
+FFMPEG=/opt/ffmpeg-2.2.1/bin/ffmpeg
+
+NEW_W=176
+NEW_H=144
+
+VIDEO_BR=256k
+VIDEO_FPS=25
+
+AUDIO_BR=64k
+AUDIO_FREQ=32000
+AUDIO_CHAN=1
+
+# Code #########################################################################
+
+function get_video_size() {
+
+  if [ "${1}" == "" ]
+  then
+    exit 1
+  fi
+
+  ffmpeg -vn -an -i "${1}" 2>&1 |
+    grep '^.*Stream.*Video.*$' |
+      sed 's/.*[^0-9]\([0-9][0-9]*x[0-9][0-9]*\)[^0-9].*/\1/'
+
+}
+
+if [ "${2}" == "" ]
+then
+  echo "Usage: avi23gp <infile> <outfile>" >&2
+  exit 1
+fi
+
+
+ORIG_SIZE=`get_video_size "$1"`
+
+ORIG_W=`echo "${ORIG_SIZE}" | sed 's/x.*//'`
+ORIG_H=`echo "${ORIG_SIZE}" | sed 's/.*x//'`
+
+TMP_H=`expr \( \( \( ${NEW_W} \* ${ORIG_H} \) / ${ORIG_W} \) / 2 \) \* 2`
+
+if [ "${TMP_H}" -ne "${NEW_H}" ]
+then
+  if [ "${TMP_H}" -gt "${NEW_H}" ]
+  then
+    CROP_SIZE=`expr \( ${TMP_H} - ${NEW_H} \) / 2`
+    CROP_PREFIX="crop"
+  else
+    CROP_SIZE=`expr \( ${NEW_H} - ${TMP_H} \) / 2`
+    CROP_PREFIX="pad"
+  fi
+
+  if [ `expr $CROP_SIZE % 2` -eq 0 ]
+  then
+    BORDER_OPT="-${CROP_PREFIX}top ${CROP_SIZE} -${CROP_PREFIX}bottom ${CROP_SIZE}"
+  else
+    BORDER_OPT="-${CROP_PREFIX}top "`expr ${CROP_SIZE} - 1`" -${CROP_PREFIX}bottom "`expr ${CROP_SIZE} + 1`
+  fi
+
+else
+  CROP_SIZE=0
+  BORDER_OPT=""
+fi
+
+echo "###############################################"
+echo ""
+echo " HxW: ${NEW_W}x${NEW_H}"
+echo ""
+echo " BORDER_OPTS: ${BORDER_OPT}"
+echo ""
+echo "###############################################"
+echo ""
+echo ""
+
+#cmd="\"${FFMPEG}\" -i \"$1\" -s ${NEW_W}x${TMP_H} -vcodec h263 -acodec libfaac -ac ${AUDIO_CHAN} -ar ${AUDIO_FREQ} -r ${VIDEO_FPS} -b ${VIDEO_BR} -ab ${AUDIO_BR} -vf pad=0:0:0:0:black \"$2\""
+#cmd="\"${FFMPEG}\" -i \"$1\" -s ${NEW_W}x${TMP_H} -vcodec h263 -acodec libfaac -ac ${AUDIO_CHAN} -ar ${AUDIO_FREQ} -r ${VIDEO_FPS} -b ${VIDEO_BR} -ab ${AUDIO_BR} \"$2\""
+cmd="\"${FFMPEG}\" -i \"$1\" -vcodec h263 -acodec libfaac -ac ${AUDIO_CHAN} -ar ${AUDIO_FREQ} -r ${VIDEO_FPS} -b ${VIDEO_BR} -ab ${AUDIO_BR} -vf \"scale=iw*min(176/iw\,144/ih):ih*min(176/iw\,144/ih), pad=176:144:(176-iw*min(176/iw\,144/ih))/2:(144-ih*min(176/iw\,144/ih))/2\" \"$2\""
+
+echo $cmd
+
+eval $cmd
