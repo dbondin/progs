@@ -20,7 +20,7 @@ $(TARGET): $(SRC:.cpp=.o)
 	@$(LD) $(LDFLAGS) -o $(@) $(^)
 	
 %.o: %.cpp
-	@$(ECHO) Compiling $(<)
+	@$(ECHO) Compiling $(<) with $(CXXFLAGS)
 	@$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $(@) $(<)
 
 %.d: %.cpp
@@ -33,4 +33,5 @@ $(TARGET): $(SRC:.cpp=.o)
 clean:
 	@$(RMRF) $(SRC:.cpp=.o) $(TARGET) $(SRC:.cpp=.d)
 
+-include component.mk
 -include $(SRC:.cpp=.d)
