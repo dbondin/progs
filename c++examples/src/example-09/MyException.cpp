@@ -2,9 +2,11 @@
 #include"MyException.hxx"
 
 const char *
-MyException::DEFAULT_MESSAGE = "My Exception";
+MyException::DEFAULT_MESSAGE = ":(";
 
-MyException::MyException(const char * message /* = DEFAULT_MESSAGE */) {
+MyException::MyException(int code /* = 0 */,
+		const char * message /* = DEFAULT_MESSAGE */) {
+	this->code = code;
 	if(message == DEFAULT_MESSAGE || message == NULL) {
 		this->message = const_cast<char *>(DEFAULT_MESSAGE);
 	}
@@ -24,4 +26,9 @@ MyException::~MyException() {
 const char *
 MyException::getMessage() const {
 	return this->message;
+}
+
+int
+MyException::getCode() const {
+	return this->code;
 }

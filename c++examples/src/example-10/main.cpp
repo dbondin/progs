@@ -11,14 +11,14 @@ int main(int argc, char ** argv) {
 		std::cout<<"catch(A): "<<e.getMessage()<<std::endl;
 	}
 	catch(ExceptionB & e) {
-		std::cout<<"catch(B): "<<e.getMessage()<<std::endl;
+		std::cout<<"catch(B): "<<e.getMessage()<<" "<<e.getDetails()<<std::endl;
 	}
 
 	try {
 		throw ExceptionB();
 	}
 	catch(ExceptionB & e) {
-		std::cout<<"catch(B): "<<e.getMessage()<<std::endl;
+		std::cout<<"catch(B): "<<e.getMessage()<<" "<<e.getDetails()<<std::endl;
 	}
 	catch(ExceptionA & e) {
 		std::cout<<"catch(A): "<<e.getMessage()<<std::endl;

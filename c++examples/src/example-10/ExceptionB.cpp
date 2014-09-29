@@ -4,3 +4,8 @@ const char *
 ExceptionB::getMessage() {
 	return "B";
 }
+
+const char *
+ExceptionB::getDetails() {
+	return ":(((";
+}

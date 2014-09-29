@@ -5,4 +5,5 @@
 class ExceptionB : public ExceptionA {
 public:
 	virtual const char * getMessage();
+	virtual const char * getDetails();
 };
