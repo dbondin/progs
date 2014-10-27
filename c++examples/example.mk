@@ -26,7 +26,7 @@ $(TARGET): $(SRC:.cpp=.o)
 %.d: %.cpp
 	@$(ECHO) Generating dependencies for $< && \
 	$(RMRF) $@ && \
-	$(MAKEDEPEND) $< > $@.$$$$ && \
+	$(MAKEDEPEND) $(CXXFLAGS) $< > $@.$$$$ && \
 	$(SED) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@ && \
 	$(RM) $@.$$$$
 
