@@ -1,7 +1,6 @@
 package vtree_test;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,13 +11,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class VTreePane extends Component {
+import javax.swing.JComponent;
+
+public class VTreePane extends JComponent {
 
 	private static class Dot {
 		public double x;
@@ -56,6 +56,11 @@ public class VTreePane extends Component {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7495040719475768509L;
+
 	private Point mouseDragStartPoint = new Point(0, 0);
 
 	private Point mouseDragOffset = new Point(0, 0);
@@ -76,13 +81,15 @@ public class VTreePane extends Component {
 
 	private static final double STAR_ANGLE_DG = 300;
 
-	private static final double STAR_ANGLE_RD = Math.PI * 2.0
-			* ((double) STAR_ANGLE_DG) / 360.0;
+	private static final double STAR_ANGLE_RD = Math.PI * 2.0 * (STAR_ANGLE_DG)
+			/ 360.0;
 
 	private boolean isDataInitialized = false;
 
 	private List<Line> lines = new LinkedList<Line>();
 	private List<Dot> dots = new LinkedList<Dot>();
+
+	private boolean antialiased = false;
 
 	public VTreePane() {
 		initGui();
@@ -90,21 +97,6 @@ public class VTreePane extends Component {
 
 	private void calculateDot(Pnt position, double size) {
 		dots.add(new Dot(position.x, position.y, size));
-	}
-
-	private double normalizeAngle(double angle) {
-
-		final double PI2 = Math.PI * 2.0;
-
-		while (angle > PI2) {
-			angle -= PI2;
-		}
-
-		while (angle < -PI2) {
-			angle += PI2;
-		}
-
-		return angle;
 	}
 
 	private void calculateOneStar(Pnt position, double size, double direction,
@@ -117,7 +109,7 @@ public class VTreePane extends Component {
 			int starLines = STAR_LINES_MIN;
 
 			if (!isRoot) {
-				starLines += (int) ((double) (STAR_LINES_MAX - STAR_LINES_MIN) * Math
+				starLines += (int) ((STAR_LINES_MAX - STAR_LINES_MIN) * Math
 						.random());
 			}
 
@@ -128,7 +120,7 @@ public class VTreePane extends Component {
 			double sector;
 
 			if (isRoot) {
-				sector = (2 * Math.PI) / ((double) starLines);
+				sector = (2 * Math.PI) / (starLines);
 				startAngle = -sector / 2.0;
 			} else {
 				sector = STAR_ANGLE_RD / ((double) starLines - 1);
@@ -200,6 +192,52 @@ public class VTreePane extends Component {
 		}
 	}
 
+	public boolean isAntialiased() {
+		return antialiased;
+	}
+
+	/**
+	 * Check if 2 intervals intersects
+	 * 
+	 * @param a1
+	 *            interval 'a' point 1
+	 * @param a2
+	 *            interval 'a' point 2
+	 * @param b1
+	 *            interval 'b' point 1
+	 * @param b2
+	 *            interval 'b' point 2
+	 * @return true if intervals intersects
+	 */
+	private boolean isIntervalsIntersect(double a1, double a2, double b1,
+			double b2) {
+		if (b1 < b2) {
+			if ((a1 < b1 && a2 < b1) || (a1 > b2 && a2 > b2)) {
+				return false;
+			}
+		} else {
+			if ((a1 < b2 && a2 < b2) || (a1 > b1 && a2 > b1)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private double normalizeAngle(double angle) {
+
+		final double PI2 = Math.PI * 2.0;
+
+		while (angle > PI2) {
+			angle -= PI2;
+		}
+
+		while (angle < -PI2) {
+			angle += PI2;
+		}
+
+		return angle;
+	}
+
 	private void onMouseClicked(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON3) {
 
@@ -239,11 +277,13 @@ public class VTreePane extends Component {
 
 		Graphics bg = buffer.getGraphics();
 
-//		if (bg instanceof Graphics2D) {
-//			Graphics2D g2d = (Graphics2D) bg;
-//			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//					RenderingHints.VALUE_ANTIALIAS_ON);
-//		}
+		if (antialiased) {
+			if (bg instanceof Graphics2D) {
+				Graphics2D g2d = (Graphics2D) bg;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+						RenderingHints.VALUE_ANTIALIAS_ON);
+			}
+		}
 
 		Point center = new Point(size.width / 2 + mouseDragOffset.x,
 				size.height / 2 + mouseDragOffset.y);
@@ -253,19 +293,60 @@ public class VTreePane extends Component {
 		bg.fillRect(0, 0, size.width, size.height);
 
 		/* Lines */
+		int lDrawn = 0;
 		bg.setColor(Color.WHITE);
 		for (Line l : lines) {
-			bg.drawLine((int) (center.x + l.x1 * scale), (int) (center.y + l.y1
-					* scale), (int) (center.x + l.x2 * scale),
-					(int) (center.y + l.y2 * scale));
+
+			double x1 = l.x1 * scale;
+			double y1 = l.y1 * scale;
+			double x2 = l.x2 * scale;
+			double y2 = l.y2 * scale;
+
+			if (Math.abs(x1 - x2) < 0.5 && Math.abs(y1 - y2) < 0.5) {
+				/* Too small to be drawn */
+				continue;
+			}
+
+			x1 += center.x;
+			y1 += center.y;
+			x2 += center.x;
+			y2 += center.y;
+
+			if (!isIntervalsIntersect(x1, x2, 0, size.width)
+					|| !isIntervalsIntersect(y1, y2, 0, size.height)) {
+				/* Do not lays on screen */
+				continue;
+			}
+
+			lDrawn++;
+
+			bg.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
 		}
 
 		/* Dots */
+		int dDrawn = 0;
 		bg.setColor(Color.YELLOW);
 		for (Dot d : dots) {
-			bg.fillOval((int) (center.x + (d.x - d.r / 2.0) * scale),
-					(int) (center.y + (d.y - d.r / 2.0) * scale),
-					(int) (d.r * scale), (int) (d.r * scale));
+
+			double r = d.r * scale;
+
+			if (r < 1) {
+				/* Too small to be drawn */
+				continue;
+			}
+
+			double x = center.x + (d.x - d.r / 2.0) * scale;
+			double y = center.y + (d.y - d.r / 2.0) * scale;
+
+			if (x + r < 0.0 || x - r > size.width || y + r < 0
+					|| y - r > size.height) {
+				/* Do not touching visible rectangle */
+				continue;
+			}
+
+			dDrawn++;
+
+			bg.fillOval((int) x, (int) y, (int) r, (int) r);
 		}
 
 		/* Legend */
@@ -277,9 +358,23 @@ public class VTreePane extends Component {
 		bg.drawString("OFFSET:" + mouseDragOffset.x + " " + mouseDragOffset.y,
 				4, ypos);
 		ypos += height;
-		bg.drawString("PTS:" + dots.size(), 4, ypos);
+		bg.drawString("DOTS:" + dots.size() + " " + dDrawn, 4, ypos);
+		ypos += height;
+		bg.drawString("LINES:" + lines.size() + " " + lDrawn, 4, ypos);
 
 		g.drawImage(buffer, 0, 0, null);
+	}
+
+	public void reset() {
+		scale = 1.0;
+		mouseDragOffset.x = 0;
+		mouseDragOffset.y = 0;
+		repaint();
+	}
+
+	public void setAntialiased(boolean antialiased) {
+		this.antialiased = antialiased;
+		repaint();
 	}
 
 	private void updateScale(double delta) {
@@ -291,12 +386,5 @@ public class VTreePane extends Component {
 		} else if (scale < SCALE_MIN) {
 			scale = SCALE_MIN;
 		}
-	}
-
-	public void reset() {
-		scale = 1.0;
-		mouseDragOffset.x = 0;
-		mouseDragOffset.y = 0;
-		repaint();
 	}
 }
