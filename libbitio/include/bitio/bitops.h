@@ -15,7 +15,7 @@ public:
 
   /** Set the bit value
    *
-   * This function sent the bit value to 1 in memory block pointed
+   * This function sets the bit value to 1 in memory block pointed
    * with but at the position pos, which is threated as bits offset
    *
    */
@@ -28,7 +28,7 @@ public:
 
   /** Unset the bit value
    *
-   * This function sent the bit value to 0 in memory block pointed
+   * This function sets the bit value to 0 in memory block pointed
    * with buf at the position pos, which is threated as bits offset
    *
    */
