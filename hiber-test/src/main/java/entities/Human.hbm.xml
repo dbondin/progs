@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="entities">
+	<class name="Human" table="HUMAN">
+		<id name="id">
+			<generator class="sequence-identity">
+				<param name="sequence">human_id_seq</param>
+			</generator>
+		</id>
+		<property name="name" />
+		<property name="dob" type="date"/>
+		<set name="pets" table="pet_2_human">
+			<key column="human_id"></key>
+			<many-to-many class="Pet" column="pet_id">
+			</many-to-many>
+		</set>
+
+	</class>
+</hibernate-mapping>

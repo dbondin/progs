@@ -9,18 +9,24 @@
 
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql://localhost/dbondin</property>
+        <property name="connection.url">jdbc:postgresql://gagarine/dbondin</property>
         <property name="connection.username">dbondin</property>
-        <property name="connection.password"></property>
+        <property name="connection.password">qwerty</property>
 
         <!-- SQL dialect -->
-        <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property>
 
 		<!-- Enable Hibernate's automatic session context management -->
         <property name="current_session_context_class">thread</property>
 
+        <property name="show_sql">true</property>
+        
+        <property name="hbm2ddl.auto">create-drop</property>
+        
 		<!-- Mappings -->
-        <mapping resource="entities/Cat.hbm.xml"/>
+        <mapping resource="entities/Pet.hbm.xml"/>
+        <mapping resource="entities/Breed.hbm.xml"/>
+        <mapping resource="entities/Human.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

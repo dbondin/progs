@@ -1,32 +1,16 @@
 package entities;
 
-public class Cat {
 
-	public Long getId() {
-		return id;
+public class Cat extends Pet {
+	
+	public Double getVolume() {
+		return volume;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	
+	public void setVolume(Double volume) {
+		this.volume = volume;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Integer getAge() {
-		return age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-
-	private Long id;
-	private String name;
-	private Integer age;
+	
+	/* [0.0, 1.0] */
+	private Double volume;
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="entities">
+	<class name="Breed" table="BREED">
+		<id name="id">
+			<generator class="sequence-identity">
+				<param name="sequence">breed_id_seq</param>
+			</generator>
+		</id>
+		<property name="name" not-null="true" />
+		<property name="descr" />
+		<set name="pets" lazy="false">
+			<key>
+                <column name="breed_id" not-null="false" />
+            </key>
+            <one-to-many class="Pet"/>
+		</set>
+	</class>
+</hibernate-mapping>

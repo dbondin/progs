@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="entities">
+	<class name="Pet" table="pet">
+		<id name="id">
+			<generator class="sequence-identity">
+				<param name="sequence">pet_id_seq</param>
+			</generator>
+		</id>
+		<property name="name" />
+		<property name="age" />
+		<many-to-one name="breed" column="breed_id" class="Breed"
+			not-null="false" lazy="false"/>
+		<set name="humans" table="pet_2_human">
+			<key column="pet_id"></key>
+			<many-to-many class="Human" column="human_id">
+			</many-to-many>
+		</set>
+		<joined-subclass name="Cat" table="cat">
+			<key column="id" />
+			<property name="volume" />
+		</joined-subclass>
+		<joined-subclass name="Dog" table="dog">
+			<key column="id" />
+			<property name="trained" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
