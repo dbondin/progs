@@ -1,5 +1,5 @@
 CXX=g++
-CXX_FLAGS=
+CXX_FLAGS=-g -O0
 LD=g++
 LD_FLAGS=
 
