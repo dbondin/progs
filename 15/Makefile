@@ -1,15 +1,15 @@
 CXX=g++
-CXX_FLAGS=-g -O0
+CXXFLAGS=-g -O0
 LD=g++
-LD_FLAGS=
+LDFLAGS=
 
 all: 15
 
 15: 15.o
-	$(LD) $(LD_FLAGS) $^ -o $@
+	$(LD) $(LDFLAGS) $^ -o $@
 
 %.o: %.cpp
-	$(CXX) $(CXX_FLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $<
 
 clean:
 	rm -rf *.o 15
