@@ -150,6 +150,7 @@ void compress(const string & infile, const string & outfile) {
 	writeStats(ofs, stats);
 	bitwriter bw;
 	bw.attach(ofs);
+	//bitwriter2 bw2;
 	unsigned char buffer[4096];
 	while (true) {
 		ifs.read((char *)buffer, 4096);
@@ -157,6 +158,7 @@ void compress(const string & infile, const string & outfile) {
 		for(int i=0; i<readBytes; i++) {
 			TheCode & code = codes[buffer[i]];
 			bw.write((void *) code.buff, code.len);
+			//bw2.write(ofs, (void *) code.buff, code.len);
 		}
 		if (!ifs.good()) {
 			break;
@@ -164,6 +166,7 @@ void compress(const string & infile, const string & outfile) {
 	}
 	bw.flush();
 	bw.detach();
+	//bw2.flush(ofs);
 	ofs.close();
 	cout << "Done" << endl;
 }
