@@ -5,5 +5,6 @@
 #include "bitops.h"
 #include "bitreader.h"
 #include "bitwriter.h"
+#include "bitwriter2.h"
 
 #endif /* __BITIO_H__ */

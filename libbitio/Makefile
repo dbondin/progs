@@ -1,5 +1,5 @@
 MAJOR_VERSION=0
-MINOR_VERSION=2
+MINOR_VERSION=3
 VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
 
 CXX=g++
@@ -19,7 +19,9 @@ VPATH=src
 
 sources=bitwriter.cpp \
 	bitreader.cpp \
-	bitio_version.cpp
+	bitio_version.cpp \
+	bitwriter2.cpp \
+	bitops.cpp
 
 all: libbitio.so libbitio.a
 

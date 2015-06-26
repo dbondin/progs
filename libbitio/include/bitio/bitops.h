@@ -13,6 +13,8 @@ class bitops
 
 public:
 
+  static const unsigned char BIT_MASK[8];
+
   /** Set the bit value
    *
    * This function sets the bit value to 1 in memory block pointed
@@ -21,7 +23,7 @@ public:
    */
   inline static void set_bit(void * buf, unsigned int pos)
   {
-    ((unsigned char *) buf)[pos / 8] |= (0x80 >> (pos % 8));
+    ((unsigned char *) buf)[pos / 8] |= BIT_MASK[pos % 8];
   
     return;
   }
@@ -34,7 +36,7 @@ public:
    */
   inline static void unset_bit(void * buf, unsigned int pos)
   {
-    ((unsigned char *) buf)[pos / 8] &= ~ (0x80 >> (pos % 8));
+    ((unsigned char *) buf)[pos / 8] &= ~ BIT_MASK[pos % 8];
 
     return;
   }
@@ -47,7 +49,7 @@ public:
    */
   inline static bool is_bit_set(const void * buf, unsigned int pos)
   {
-    return (((const char *) buf)[pos / 8] & (0x80 >> (pos % 8))) != 0;
+    return (((const char *) buf)[pos / 8] & BIT_MASK[pos % 8]) != 0;
   }
 
 };
