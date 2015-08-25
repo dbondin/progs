@@ -24,7 +24,7 @@ public class Xml2MapSAXImplDefaultHandler extends DefaultHandler {
 
 		public int currentRootTagIndex;
 
-		public String lastValue;
+		public StringBuilder lastValue = new StringBuilder();
 
 		public Map<String, String> currentData;
 
@@ -39,7 +39,7 @@ public class Xml2MapSAXImplDefaultHandler extends DefaultHandler {
 			this.currentRootTag = null;
 			this.currentRootTagIndex = -1;
 			this.lastOp = null;
-			this.lastValue = null;
+			this.lastValue.setLength(0);;
 		}
 	}
 
@@ -104,7 +104,7 @@ public class Xml2MapSAXImplDefaultHandler extends DefaultHandler {
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		state.lastValue = new String(ch, start, length).trim();
+		state.lastValue.append(ch, start, length);
 	};
 
 	@Override
@@ -119,16 +119,14 @@ public class Xml2MapSAXImplDefaultHandler extends DefaultHandler {
 					}
 				} else {
 					if (state.lastOp == LAST_OP.START) {
-						if (state.lastValue != null) {
-							state.currentData.put(getCurrentTagListAsString(), state.lastValue);
-						}
+						state.currentData.put(getCurrentTagListAsString(), state.lastValue.toString().trim());
 					}
 				}
 			}
 
 			state.lastOp = LAST_OP.END;
 			currentTagList.removeLast();
-			state.lastValue = null;
+			state.lastValue.setLength(0);
 
 		}
 	};
