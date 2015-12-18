@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
 	for(int value : vx) {
 		cout<<"- " <<value<<endl;
 	}
+	//vx.at(5) = 3;
 
 	return 0;
 }
