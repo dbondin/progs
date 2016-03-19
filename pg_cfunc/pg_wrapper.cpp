@@ -36,7 +36,7 @@ extern "C" {
 Datum pg_func_f1(PG_FUNCTION_ARGS) {
 
 	/* elog() - просто логгируем все, что нам интересно */
-	elog(INFO, "pg_func_f1() started2");
+	elog(INFO, "pg_func_f1() started");
 
 	/* Берем аргумент функции как TEXT */
 	text * arg0 = PG_GETARG_TEXT_P(0);
