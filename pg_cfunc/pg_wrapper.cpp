@@ -67,7 +67,7 @@ Datum pg_func_f1(PG_FUNCTION_ARGS) {
 
 	/* Возращать назад в postgres надо TEXT, а не C-строку. Выделим под него память - длинна строки + заголовок */
 	text * result = (text *) palloc(c_str_out_size + VARHDRSZ);
-	/* Выставим полную длинну в стректуре TEXT */
+	/* Выставим полную длинну в структуре TEXT */
 	SET_VARSIZE(result, c_str_out_size + VARHDRSZ);
 	/* Скопируем строковые данные из C-строки в TEXT */
 	memcpy((void *) VARDATA(result), (void *) c_str_out, c_str_out_size);
