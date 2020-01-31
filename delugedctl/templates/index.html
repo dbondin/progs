@@ -1,0 +1,51 @@
+$def with (deluged_running)
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Deluge Daemon Controller</title>
+  </head>
+  <body>
+    <form action="/" method="get">
+      <div class="container">
+	<div class="row">
+	  <div class="col">
+	    <h1>Deluge Daemon Controller</h1>
+	  </div>
+	</div>
+	
+	$if deluged_running:
+	  <div class="row">
+	    <div class="col">
+	        <h2>Deluge Daemon is <span class="badge badge-success">Running</span></h2>
+	    </div>
+	  </div>
+	
+	  <div class="row">
+	    <div class="col">
+              <button type="submit" name="action" value="stop" class="btn btn-primary">Stop</button>
+            </div>
+          </div>
+
+	$else:
+	  <div class="row">
+            <div class="col">
+              <h2>Deluge Daemon is <span class="badge badge-danger">Stopped</span></h2>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <button type="submit" name="action" value="start" class="btn btn-primary">Start</button>
+	    </div>
+	  </div>
+	
+	<div class="row">
+	  <div class="col">
+            <button type="submit" class="btn btn-primary">Refresh</button>
+	  </div>
+	</div>
+      </div>
+    </form>
+  </body>
+</html>
