@@ -4,48 +4,34 @@ $def with (deluged_running)
   <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Deluge Daemon Controller</title>
+    <style>
+      div.deluge {
+        position: absolute;
+        width: 100%;
+        height: 90%;
+        border-style: none;
+        left: 0px;
+        top: 10%;
+      }
+      iframe.deluge {
+        width: 100%;
+        height: 100%;
+        border-style: none;
+      }
+    </style>
   </head>
   <body>
     <form action="/" method="get">
-      <div class="container">
-	<div class="row">
-	  <div class="col">
-	    <h1>Deluge Daemon Controller</h1>
-	  </div>
-	</div>
-	
-	$if deluged_running:
-	  <div class="row">
-	    <div class="col">
-	        <h2>Deluge Daemon is <span class="badge badge-success">Running</span></h2>
-	    </div>
-	  </div>
-	
-	  <div class="row">
-	    <div class="col">
-              <button type="submit" name="action" value="stop" class="btn btn-primary">Stop</button>
-            </div>
-          </div>
+      <span>Status:</span>
+      $if deluged_running:
+	<span class="badge badge-success">Running</span>
+        <button type="submit" name="action" value="stop" class="btn btn-primary">Stop</button>
+      $else:
+        <span class="badge badge-danger">Stopped</span>
+        <button type="submit" name="action" value="start" class="btn btn-primary">Start</button>
 
-	$else:
-	  <div class="row">
-            <div class="col">
-              <h2>Deluge Daemon is <span class="badge badge-danger">Stopped</span></h2>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <button type="submit" name="action" value="start" class="btn btn-primary">Start</button>
-	    </div>
-	  </div>
-	
-	<div class="row">
-	  <div class="col">
-            <button type="submit" class="btn btn-primary">Refresh</button>
-	  </div>
-	</div>
-      </div>
+      <button type="submit" class="btn btn-primary">Refresh</button>
     </form>
+    <div class="deluge"><iframe src="http://pi:8080" class="deluge" /></div>
   </body>
 </html>
