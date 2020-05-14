@@ -14,7 +14,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>simblog</name>
   <description>SIMple BLOG</description>
-  
+
   <properties>
     <java.version>1.8</java.version>
     <simblog.swagger.sourceFolder>src/gen/java/main</simblog.swagger.sourceFolder>
@@ -84,6 +84,26 @@
       <version>1.6.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -132,6 +152,7 @@
               <generateSupportingFiles>false</generateSupportingFiles>
               <configHelp>false</configHelp>
               <addCompileSourceRoot>true</addCompileSourceRoot>
+              <invokerPackage>com.dbondin.simblog.swagger</invokerPackage>
               <apiPackage>com.dbondin.simblog.swagger.api</apiPackage>
               <modelPackage>com.dbondin.simblog.swagger.model</modelPackage>
               <configOptions>
