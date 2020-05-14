@@ -1,19 +1,12 @@
 package com.dbondin.simblog;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
-@Testcontainers
-@ContextConfiguration(initializers = SimblogApplicationTests.TestContextInitializer.class)
-public class SimblogApplicationTests {
+public class AbstractSimblogTest {
 
   public static class TestContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     @Override
@@ -25,19 +18,14 @@ public class SimblogApplicationTests {
           .applyTo(applicationContext.getEnvironment());
     }
   }
-
+  
   public static class TestPostgreSQLContainer extends PostgreSQLContainer<TestPostgreSQLContainer> {
     public TestPostgreSQLContainer(String dockerImageName) {
       super(dockerImageName);
     }
   };
-
+  
   @Container
   public static TestPostgreSQLContainer postgresqlContainer = new TestPostgreSQLContainer("postgres:12.2")
-      .withDatabaseName("foo").withUsername("foo").withPassword("secret");
-
-  @Test
-  void contextLoads() {
-  }
-
+      .withDatabaseName("simblog").withUsername("admin").withPassword("qwerty");
 }
