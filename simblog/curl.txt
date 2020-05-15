@@ -1,8 +1,0 @@
-curl -i --request POST \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"admin"}' \
-  http://localhost:8080/authenticate
-
-function curl_get() {
-  curl -i -H "Authorization: Bearer $1" http://localhost:8080/index.html
-}
