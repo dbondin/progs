@@ -2,36 +2,66 @@ $def with (deluged_running)
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Deluge Daemon Controller</title>
     <style>
-      div.deluge {
-        position: absolute;
-        width: 100%;
-        height: 90%;
+      body {
+        margin: 0px;
+        border-width: 0px;
         border-style: none;
-        left: 0px;
-        top: 10%;
+      }
+      div.holder {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+        border-width: 0px;
+        border-style: none;
       }
       iframe.deluge {
         width: 100%;
         height: 100%;
+        border-width: 0px;
         border-style: none;
+        top: 100vh;
+      }
+      div.bar {
+        margin: 0px;
+        padding: 4px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: yellow;
+        border-style: groove;
+      }
+      span.status {
+        border-style: solid;
+        border-width: 1px;
+        border-color: black;
+      }
+      span.running {
+        background-color: greed;
+        color: white;
+      }
+      span.stopped {
+        background-color: red;
+        color: white;
       }
     </style>
   </head>
   <body>
-    <form action="/" method="get">
-      <span>Status:</span>
-      $if deluged_running:
-	<span class="badge badge-success">Running</span>
-        <button type="submit" name="action" value="stop" class="btn btn-primary">Stop</button>
-      $else:
-        <span class="badge badge-danger">Stopped</span>
-        <button type="submit" name="action" value="start" class="btn btn-primary">Start</button>
-
-      <button type="submit" class="btn btn-primary">Refresh</button>
-    </form>
-    <div class="deluge"><iframe src="http://pi:8080" class="deluge" /></div>
+    <div class="holder">
+      <iframe src="http://pi:8080" class="deluge"></iframe>
+      <div class="bar"> 
+        <form action="/" method="get">
+          <span>Status:</span>
+          $if deluged_running:
+            <span class="status running">Running</span>
+            <button type="submit" name="action" value="stop">Stop</button>
+          $else:
+            <span class="status stopped">Stopped</span>
+            <button type="submit" name="action" value="start">Start</button>
+          <button type="submit">Refresh</button>
+        </form>
+      </div><!-- div.bar -->
+    </div><!-- div.holder -->
   </body>
 </html>
