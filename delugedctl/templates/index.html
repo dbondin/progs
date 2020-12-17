@@ -63,7 +63,6 @@ $def with (deluged_running)
       <iframe src="http://192.168.0.50:8080" class="deluge"></iframe>
       <div class="bar"> 
         <form action="/" method="get">
-          <span>Status:</span>
           $if deluged_running:
             <span class="status running">Running</span>
             <button type="submit" name="action" value="stop">Stop</button>
