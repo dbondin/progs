@@ -24,8 +24,6 @@ public class MouseMoverApplication {
     	Point previousMousePointerLocation = null;
     	int direction = 1;
     	
-    	final boolean [] exitFlag = new boolean [] { false };
-    	
     	if(SystemTray.isSupported()) {
     		final SystemTray systemTray = SystemTray.getSystemTray();
     		final TrayIcon trayIcon = new TrayIcon(new ImageIcon(MouseMoverApplication.class.getResource("icon.png")).getImage());
@@ -34,7 +32,7 @@ public class MouseMoverApplication {
     		MenuItem menuItem = new MenuItem("Exit");
     		menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					exitFlag[0] = true;
+					System.exit(0);
 				}
 			});
     		popupMenu.add(menuItem);
@@ -90,12 +88,6 @@ public class MouseMoverApplication {
             catch(Throwable t) {
             	System.err.println(t);
             }
-            
-            if(exitFlag[0]) {
-            	break;
-            }
         }
-        
-        System.exit(0);
     }
 }
