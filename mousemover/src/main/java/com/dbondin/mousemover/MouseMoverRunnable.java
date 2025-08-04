@@ -72,8 +72,8 @@ public class MouseMoverRunnable implements Runnable {
 				if(statusMenuItem != null) {
 					Duration left = Duration.ofMillis((startTime + runningTimeoutMs) - System.currentTimeMillis());
 					statusMenuItem.setLabel("--- " + String.format("%d:%02d", 
-							left.toHoursPart(), 
-							left.toMinutesPart()) + " ---");
+							left.toHours(), 
+							left.toMinutes() - TimeUnit.HOURS.toMinutes(left.toHours())) + " ---");
 				}
 				
 				Point mousePointerLocation = null;
